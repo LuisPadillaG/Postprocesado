@@ -17,5 +17,6 @@ public class Enemigo : MonoBehaviour
     private void OnCollisionEnter(Collision collision)
     {
         Debug.Log("me dieron");
+        animator.SetInteger("Estado", 1);
     }
 }
