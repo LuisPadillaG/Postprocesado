@@ -12,6 +12,13 @@ public class Jugador : MonoBehaviour
     public GameObject LugarHitBoxEspada;
     public GameObject hitBoxEspada;
 
+    float contador_activar_hitboxespada;
+    int estado_hitboxespada;
+    float contador_recuperarse_deherido;
+    int vida;
+    AudioSource audioSource;
+    public AudioClip sonidoSlashEspada;
+    public AudioClip sonidoHerido;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -21,49 +28,99 @@ public class Jugador : MonoBehaviour
         estado_anterior = 0;
         estado_anterior = 0;
         contadorCancelarAtaque = 0;
-        
-        
+        estado_hitboxespada = 0;
+        hitBoxEspada.SetActive(false);
+        contador_recuperarse_deherido = 0;
+        vida = 3;
+        audioSource = this.GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        posicion.x += Input.GetAxis("Horizontal") * Time.deltaTime * 3;
-
-        if (estado_actual != 2 && estado_actual != 3) {
-            if (Input.GetAxis("Horizontal") > 0)
+        if(estado_actual != 5)
+        {
+            if(estado_actual != 3)
             {
-                rotacion.y = 0;
-                estado_actual = 1;
+                posicion.x += Input.GetAxis("Horizontal") * Time.deltaTime * 3;
             }
-            else if (Input.GetAxis("Horizontal") < 0)
+            if (contador_recuperarse_deherido > 0)
             {
-                rotacion.y = -180;
-                estado_actual = 1;
+                contador_recuperarse_deherido -= Time.deltaTime;
+                if (contador_recuperarse_deherido <= 0)
+                {
+                    estado_actual = 0;
+                }
+            }
+            if (estado_actual != 2 && estado_actual != 3 && estado_actual != 4)
+            {
+                if (Input.GetAxis("Horizontal") > 0)
+                {
+                    rotacion.y = 0;
+                    estado_actual = 1;
+                }
+                else if (Input.GetAxis("Horizontal") < 0)
+                {
+                    rotacion.y = -180;
+                    estado_actual = 1;
+                }
+                else
+                {
+                    estado_actual = 0;
+                }
+            }
+
+            if (Input.GetKey(KeyCode.K))
+            {
+                estado_actual = 2;
+                contadorCancelarAtaque = 2;
+            }
+            if (contadorCancelarAtaque > 0)
+            {
+                contadorCancelarAtaque -= Time.deltaTime;
+                if (contadorCancelarAtaque < 0)
+                {
+                    estado_actual = 0;
+                }
+            }
+            if (Input.GetKey(KeyCode.J))
+            {
+                if (estado_actual != 3)
+                {
+                    estado_actual = 3;
+                    contador_activar_hitboxespada = 0.7f;
+                }
+            }
+
+            if (estado_hitboxespada == 0)
+            {
+                if (contador_activar_hitboxespada > 0)
+                {
+                    contador_activar_hitboxespada -= Time.deltaTime;
+                    if (contador_activar_hitboxespada <= 0)
+                    {
+                        hitBoxEspada.SetActive(true);
+                        estado_hitboxespada = 1;
+                        contador_activar_hitboxespada = 0.2f;
+                        audioSource.clip = sonidoSlashEspada;
+                        audioSource.Play();
+                    }
+                }
             }
             else
             {
-                estado_actual = 0;
+                if (contador_activar_hitboxespada > 0)
+                {
+                    contador_activar_hitboxespada -= Time.deltaTime;
+                    if (contador_activar_hitboxespada <= 0)
+                    {
+                        hitBoxEspada.SetActive(false);
+                        contador_activar_hitboxespada = 0f;
+                    }
+                }
             }
         }
-
-        if (Input.GetKey(KeyCode.K))
-        {
-            estado_actual = 2;
-            contadorCancelarAtaque = 2;
-        }
-        if(contadorCancelarAtaque > 0) {
-            contadorCancelarAtaque -= Time.deltaTime;
-            if (contadorCancelarAtaque < 0)
-            {
-                estado_actual = 0;
-            }
-        }
-        if (Input.GetKey(KeyCode.J))
-        {
-            estado_actual = 3;
-        }
-        animator.SetInteger("Estado", estado_actual);
+            animator.SetInteger("Estado", estado_actual);
         if (estado_anterior != estado_actual)
         {
             animator.SetTrigger("cambioEstado");
@@ -85,11 +142,20 @@ public class Jugador : MonoBehaviour
     }
     private void OnCollisionEnter(Collision collision)
     {
-        Debug.Log("atac" + collision.gameObject.tag);
+        //Debug.Log("atac" + collision.gameObject.tag);
         if(collision.gameObject.tag == "DanoAJugador")
         {
             collision.gameObject.SetActive(false);
-            Destroy(this.gameObject);
-        }
+            audioSource.clip = sonidoHerido;
+            audioSource.Play();
+            //Destroy(this.gameObject);
+            estado_actual = 4;
+            contador_recuperarse_deherido = 1;
+            vida--;
+            if (vida <= 0)
+            {
+                estado_actual = 5;
+            }
+        } 
     }
 }

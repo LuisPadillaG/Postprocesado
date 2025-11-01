@@ -7,6 +7,11 @@ public class Enemigo : MonoBehaviour
     public GameObject puntoCollisionEspada;
     public GameObject hitBoxEspada;
     float contadorDesactivarHitBoxEspada;
+    int vida;
+    AudioSource audioSource;
+    public AudioClip sonidoAtacar;
+    public AudioClip sonidoHerido;
+    public 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -14,14 +19,20 @@ public class Enemigo : MonoBehaviour
         contador = 0;
         hitBoxEspada.SetActive(false);
         contadorDesactivarHitBoxEspada = 0;
+        vida = 3;
+        audioSource = this.GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
     void Update()
     {
         contador += Time.deltaTime;
-        if (contador > 5) {
+        if (contador > 5 && vida > 0) {
             animator.SetInteger("Estado", 2);
+            contador = 0;
+
+            audioSource.clip = sonidoAtacar;
+            audioSource.Play();
         }
 
         if (contadorDesactivarHitBoxEspada > 0)
@@ -37,10 +48,18 @@ public class Enemigo : MonoBehaviour
     }
     private void OnCollisionEnter(Collision collision)
     {
-        if(collision.gameObject.tag == "DanoAEnemigo")
+        if(vida > 0)
         {
-            animator.SetInteger("Estado", 1);
-        } 
+            if (collision.gameObject.tag == "DanoAEnemigo")
+            {
+                animator.SetInteger("Estado", 1);
+                vida--;
+                if (vida <= 0)
+                {
+                    animator.SetTrigger("Muerte");
+                }
+            }
+        }
     }
     public void Evento_ActivarHitBoxEspada()
     {

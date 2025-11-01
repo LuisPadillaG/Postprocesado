@@ -130,7 +130,7 @@ GameObject:
   - component: {fileID: 8646737}
   m_Layer: 0
   m_Name: LugarHitBox
-  m_TagString: Untagged
+  m_TagString: DanoAEnemigo
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -528,6 +528,7 @@ GameObject:
   - component: {fileID: 574495888}
   - component: {fileID: 574495890}
   - component: {fileID: 574495889}
+  - component: {fileID: 574495891}
   m_Layer: 0
   m_Name: Jugador
   m_TagString: Player
@@ -568,6 +569,8 @@ MonoBehaviour:
   puntoCreacionBala: {fileID: 740457796}
   LugarHitBoxEspada: {fileID: 8646736}
   hitBoxEspada: {fileID: 831088213}
+  sonidoSlashEspada: {fileID: 8300000, guid: 466d3d826d4a1ea4eaa276458c091587, type: 3}
+  sonidoHerido: {fileID: 8300000, guid: 62dc80b469482424c928159a57ca25eb, type: 3}
 --- !u!65 &574495889
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -616,6 +619,103 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 126
   m_CollisionDetection: 0
+--- !u!82 &574495891
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 574495886}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!4 &602446351 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2412161367050800168, guid: 5f04a73178193ce4c83704ae6b0420e3, type: 3}
@@ -921,6 +1021,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   puntoCollisionEspada: {fileID: 895443651}
   hitBoxEspada: {fileID: 267514730}
+  sonidoAtacar: {fileID: 8300000, guid: a47bf9bf2f8e22b4c842b02cfe75b3ca, type: 3}
+  sonidoHerido: {fileID: 8300000, guid: 33460e976d0167f4a9427e0f3e57efff, type: 3}
 --- !u!1001 &1861023439
 PrefabInstance:
   m_ObjectHideFlags: 0
